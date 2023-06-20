@@ -80,6 +80,7 @@ class NetworkHandler {
       throw MyException(e);
     }
   }
+
   Future<http.Response> postReq(String endpoint,
       {required Map<String, dynamic> body}) async {
     String token = await AppHelper.getToken();
