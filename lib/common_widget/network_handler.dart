@@ -97,6 +97,7 @@ class NetworkHandler {
       throw MyException(e);
     }
   }
+
   Future<http.Response> getRequest(String endpoint,
       {Map<String, String>? queryParameter}) async {
     try {
