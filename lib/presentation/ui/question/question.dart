@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:washq/common_widget/app_helper.dart';
@@ -143,48 +141,71 @@ class _QuestionState extends State<Questions> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   children: [
-                                                    Row(
-                                                      children: [
-                                                        Checkbox(
-                                                            value: state.questionModel.data![index].queOptions![ind].isChecked,
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                state.questionModel.data![index].queOptions![ind].isChecked = value!;
-                                                              });
+                                                    GestureDetector(
+                                                      onTap: (){
 
-                                                              state.questionModel.data?.forEach((element) {
-                                                                List<String>elementQuestionsCheckedAnswersArray = [];
-                                                                if (selectedQuestionAnswer.isNotEmpty) {
-                                                                  selectedQuestionAnswer.entries.forEach((mapElement) {
-                                                                    if (mapElement.key == element.queId) {
-                                                                      elementQuestionsCheckedAnswersArray.addAll(mapElement.value);
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Checkbox(
+                                                              value: state.questionModel.data![index].queOptions![ind].isChecked,
+                                                              onChanged: (value) {
+                                                                setState(() {
+                                                                  state.questionModel.data![index].queOptions![ind].isChecked = value!;
+                                                                });
+
+                                                                state.questionModel.data?.forEach((element) {
+                                                                  List<String>elementQuestionsCheckedAnswersArray = [];
+                                                                  if (selectedQuestionAnswer.isNotEmpty) {
+                                                                    selectedQuestionAnswer.entries.forEach((mapElement) {
+                                                                      if (mapElement.key == element.queId) {
+                                                                        elementQuestionsCheckedAnswersArray.addAll(mapElement.value);
+                                                                      }
+                                                                    });
+                                                                  }
+
+                                                                  element.queOptions?.forEach((elements) {if (elements.isChecked == true) {
+                                                                      if (!elementQuestionsCheckedAnswersArray.contains(elements.optionId)) {
+                                                                        elementQuestionsCheckedAnswersArray.add(elements.optionId ?? "");
+                                                                        selectedQuestionAnswer =
+                                                                            {
+                                                                          element.queId ?? "": elementQuestionsCheckedAnswersArray
+                                                                        };
+
+                                                                      }
+                                                                    } else {
+                                                                      if (elementQuestionsCheckedAnswersArray.contains(elements.optionId)) {
+                                                                        elementQuestionsCheckedAnswersArray
+                                                                            .remove(
+                                                                                elements.optionId);
+                                                                        selectedQuestionAnswer =
+                                                                            {
+                                                                          element.queId ??
+                                                                                  "":
+                                                                              elementQuestionsCheckedAnswersArray
+                                                                        };
+                                                                        sectionWiseQuestionAnswer =
+                                                                            {
+                                                                          arg[Constants.sectionIndex] ??
+                                                                                  "":
+                                                                              selectedQuestionAnswer
+                                                                        };
+                                                                      }
                                                                     }
                                                                   });
-                                                                }
-
-                                                                element.queOptions?.forEach((elements) {if (elements.isChecked == true) {
-                                                                    if (!elementQuestionsCheckedAnswersArray.contains(elements.optionId)) {
-                                                                      elementQuestionsCheckedAnswersArray.add(elements.optionId ?? "");
-                                                                      selectedQuestionAnswer =
-                                                                          {
-                                                                        element.queId ?? "": elementQuestionsCheckedAnswersArray
-                                                                      };
-
-                                                                    }
-                                                                  } else {
-                                                                    if (elementQuestionsCheckedAnswersArray.contains(elements.optionId)) {
-                                                                      elementQuestionsCheckedAnswersArray.remove(elements.optionId);
-                                                                      selectedQuestionAnswer = {
-                                                                        element.queId ?? "": elementQuestionsCheckedAnswersArray
-                                                                      };
-                                                                      sectionWiseQuestionAnswer = {arg[Constants.sectionIndex] ?? "" : selectedQuestionAnswer};
-                                                                    }
-                                                                  }
                                                                 });
-                                                              });
-                                                            }),
-                                                        Text(state.questionModel.data![index].queOptions![ind].optionTitle.toString() ?? ""),
-                                                      ],
+                                                              }),
+                                                          Text(state
+                                                                  .questionModel
+                                                                  .data![
+                                                                      index]
+                                                                  .queOptions![
+                                                                      ind]
+                                                                  .optionTitle
+                                                                  .toString() ??
+                                                              ""),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
@@ -266,6 +287,7 @@ class _QuestionState extends State<Questions> {
 
                         Map<String, List<Map<String, List<String>>>> questionsArray = {"questions": [selectedQuestionAnswer]};
                         Map<String, dynamic> sectionWiseQuestionAnswers = {arg[Constants.sectionIndex] : [questionsArray]};
+
                         print("QuestionOption:::${questionsArray})}");
                         print("QuestionOption:::${sectionWiseQuestionAnswers})}");
                         print("QuestionOption:::${selectedQuestionAnswer})}");

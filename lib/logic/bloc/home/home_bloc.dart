@@ -62,7 +62,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       print("OnSubmit:::$body");
         var response = repository.submitAnswer(body);
 
-      print("response:::${jsonEncode(response)}");
+      print("response:::${response}");
       
     });
   }
